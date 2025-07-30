@@ -6,6 +6,7 @@ Coordinates the complete data pipeline from fetching to vector storage
 import asyncio
 import logging
 import sys
+import os
 from pathlib import Path
 from datetime import datetime
 import json
@@ -159,6 +160,17 @@ class PermitPipeline:
 if __name__ == "__main__":
     import argparse
     
+    # Initialize data manager for GitHub Actions if needed
+    if os.getenv('GITHUB_ACTIONS'):
+        sys.path.append(str(Path(__file__).parent / "scripts"))
+        try:
+            from github_data_manager import GitHubDataManager
+            data_manager = GitHubDataManager()
+            data_manager.prepare_for_run()
+            logger.info("GitHub Actions data preparation complete")
+        except ImportError:
+            logger.warning("GitHub data manager not available")
+    
     parser = argparse.ArgumentParser(description="Building Permit Intelligence Pipeline")
     parser.add_argument("--days", type=int, default=1, help="Number of days back to fetch permits")
     parser.add_argument("--max-records", type=int, help="Maximum records per county (for testing)")
@@ -167,6 +179,13 @@ if __name__ == "__main__":
     
     pipeline = PermitPipeline()
     result = pipeline.run_pipeline(days_back=args.days, max_records_per_county=args.max_records)
+    
+    # Save metadata for GitHub Actions
+    if os.getenv('GITHUB_ACTIONS'):
+        try:
+            data_manager.save_run_metadata(result)
+        except:
+            pass  # Don't fail if metadata save fails
     
     print(f"\nPipeline Result:")
     print(json.dumps(result, indent=2))
