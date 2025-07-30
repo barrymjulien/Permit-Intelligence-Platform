@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data files (keep structure but ignore large data)
+data/chroma_db/
+data/raw/*.csv
+data/raw/*.json
+data/processed/*.json
+logs/*.log
+
+# Cache files
+data/cache/geocode_cache.json
+
+# API Keys (already in .env but extra safety)
+*.key
+*_key.txt
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/

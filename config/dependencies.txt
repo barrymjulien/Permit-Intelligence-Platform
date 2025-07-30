@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+weaviate-client
+langchain
+openai
+python-dotenv
